@@ -5,11 +5,12 @@ import microdf as mdf
 RENAMES = {
     "R6xshhwgt": "weight",
     # Components for estimating land holdings.
-    "TotWlthR6": "wealth",
     "DVLUKValR6_sum": "uk_land",
     "DVPropertyR6": "property_values",
-    # Use gross financial wealth to exclude e.g. credit card debt (?).
-    "HFINWR6_Sum": "gross_financial_wealth",
+    "DVFESHARESR6_aggr": "emp_shares_options",
+    "DVFShUKVR6_aggr": "uk_shares",
+    "DVIISAVR6_aggr": "investment_isas",
+    "DVFCollVR6_aggr": "unit_investment_trusts",
     "TotpenR6_aggr": "pensions",
     "DvvalDBTR6_aggr": "db_pensions",
     # Predictors for fusing to FRS.
@@ -20,6 +21,8 @@ RENAMES = {
     "DVLOSValR6_sum": "non_uk_land",
     "HFINWNTR6_Sum": "net_financial_wealth",
     "DVLUKDebtR6_sum": "uk_land_debt",
+    "HFINWR6_Sum": "gross_financial_wealth",
+    "TotWlthR6": "wealth",
 }
 
 was = (
@@ -43,20 +46,25 @@ GOV_LAND_VALUE = 196_730e6
 
 total_uk_land = mdf.weighted_sum(was, "uk_land", "weight")
 total_property = mdf.weighted_sum(was, "property_values", "weight")
-was["financial_wealth_non_db_pensions"] = (
-    was.gross_financial_wealth + was.pensions - was.db_pensions
-)
-total_financial_wealth_non_db_pensions = mdf.weighted_sum(
-    was, "financial_wealth_non_db_pensions", "weight"
-)
+was["non_db_pensions"] = was.pensions - was.db_pensions
+was["corp_wealth"] = was[
+    [
+        "non_db_pensions",
+        "emp_shares_options",
+        "uk_shares",
+        "investment_isas",
+        "unit_investment_trusts",
+    ]
+].sum(axis=1)
+total_corp_wealth = mdf.weighted_sum(was, "corp_wealth", "weight")
 
 land_prop_share = (HH_NP_LAND_VALUE - total_uk_land) / total_property
-land_fin_pen_share = CORP_LAND_VALUE / total_financial_wealth_non_db_pensions
+land_corp_share = CORP_LAND_VALUE / total_corp_wealth
 
 was["est_land"] = (
     was.uk_land
     + was.property_values * land_prop_share
-    + was.financial_wealth_non_db_pensions * land_fin_pen_share
+    + was.corp_wealth * land_corp_share
 )
 
 print(mdf.weighted_sum(was, "est_land", "weight"))

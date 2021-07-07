@@ -1,9 +1,9 @@
 Land value = 
 * UK land value (separate from property, e.g. separate from one's residence)
 * Property values * land share of property
-* Financial wealth * land share of financial wealth
+* Corporate wealth * land share of corporate wealth
 
 Where
-* Financial wealth includes pensions, excluding defined benefit pensions
+* Corporate wealth is the sum of non-defined-benefit pensions, employee shares and options, UK shares, investment ISAs (individual savings accounts), and unit investment trusts.
 * Land share of property is the (ONS total land value - WAS total UK land) / WAS total property
-* Land share of financial and pension wealth = ONS corporation land value / (WAS total financial wealth + WAS total non-DB pensions)
+* Land share of corporate wealth = ONS corporation land value / WAS corporate wealth
