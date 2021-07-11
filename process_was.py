@@ -15,7 +15,14 @@ RENAMES = {
     # Predictors for fusing to FRS.
     "dvtotgirR6": "gross_income",
     "NumAdultW6": "num_adults",
-    "NumCh18W6": "num_children_u18",
+    "NumCh18W6": "num_children",
+    # Household Gross Annual income from occupational or private pensions
+    "DVGIPPENR6_AGGR": "pension_income",
+    "DVGISER6_AGGR": "self_employment_income",
+    # Household Gross annual income from investments
+    "DVGIINVR6_aggr": "investment_income",
+    # Household Total Annual Gross employee income
+    "DVGIEMPR6_AGGR": "employment_income",
     # Other columns for reference.
     "DVLOSValR6_sum": "non_uk_land",
     "HFINWNTR6_Sum": "net_financial_wealth",
@@ -43,8 +50,6 @@ CORP_LAND_VALUE = 1_600_038e6
 # Land value held by government (not used).
 GOV_LAND_VALUE = 196_730e6
 
-total_uk_land = mdf.weighted_sum(was, "uk_land", "weight")
-total_property = mdf.weighted_sum(was, "property_values", "weight")
 was["non_db_pensions"] = was.pensions - was.db_pensions
 was["corp_wealth"] = was[
     [
@@ -55,10 +60,13 @@ was["corp_wealth"] = was[
         "unit_investment_trusts",
     ]
 ].sum(axis=1)
-total_corp_wealth = mdf.weighted_sum(was, "corp_wealth", "weight")
 
-land_prop_share = (HH_NP_LAND_VALUE - total_uk_land) / total_property
-land_corp_share = CORP_LAND_VALUE / total_corp_wealth
+totals = mdf.weighted_sum(
+    was, ["uk_land", "property_values", "corp_wealth"], "weight"
+)
+
+land_prop_share = (HH_NP_LAND_VALUE - totals.uk_land) / totals.property_values
+land_corp_share = CORP_LAND_VALUE / totals.corp_wealth
 
 was["est_land"] = (
     was.uk_land
@@ -69,5 +77,3 @@ was["est_land"] = (
 print(mdf.weighted_sum(was, "est_land", "weight"))
 
 was.to_csv("~/was.csv", index=False)
-
-# train, test = sklearn.model_selection.train_test_split(df)
