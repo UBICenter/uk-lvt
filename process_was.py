@@ -23,6 +23,10 @@ RENAMES = {
     "DVGIINVR6_aggr": "investment_income",
     # Household Total Annual Gross employee income
     "DVGIEMPR6_AGGR": "employment_income",
+    "HBedrmW6": "num_bedrooms",
+    "GORR6": "region",
+    "DVPriRntW6": "is_renter",  # {1, 2} TODO: Get codebook values.
+    "CTAmtW6": "council_tax",
     # Other columns for reference.
     "DVLOSValR6_sum": "non_uk_land",
     "HFINWNTR6_Sum": "net_financial_wealth",
