@@ -1,11 +1,11 @@
 layout: post
 current: post
-cover: 
+cover: assets/images/2021-09-19-uk-lvt/cover.jpg
 navigation: True
-title: "An interesting post"
-date: 2021-06-15
-tags: []
+title: ""There you may behold the rent": Effects of a UK land dividend"
+date: 2021-09-19
+tags: [uk, policyengine, land]
 subclass: 'post'
-author: nikhil
-excerpt: "Some interesting excerpt."
+author: max, nikhil, charles
+excerpt: Funding universal basic income with a land value tax would reduce poverty and inequality, while raising questions about distributional measurement
 class: post-template
