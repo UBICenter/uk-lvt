@@ -2,7 +2,7 @@ name: Submit website PR
 on: [push]
 jobs:
   build:
-    if: github.repository == 'ubicenter/analysis-template'
+    if: github.repository == 'ubicenter/uk-lvt'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,11 +29,11 @@ jobs:
           git remote add upstream https://ubicenter-post-bot:$UBICENTER_POST_BOT_TOKEN@github.com/ubicenter/ubicenter.org
           git checkout -b ${POST_NAME}
           cd ..
-          python ./ubicenter.org/post_from_notebook.py analysis-template/website/post.ipynb analysis-template/website/metadata.yml --output-md ubicenter.org/_posts/${POST_NAME}.md --output-folder ubicenter.org/assets/markdown_assets/${POST_NAME}/
+          python ./ubicenter.org/post_from_notebook.py uk-lvt/website/post.ipynb uk-lvt/website/metadata.yml --output-md ubicenter.org/_posts/${POST_NAME}.md --output-folder ubicenter.org/assets/markdown_assets/${POST_NAME}/
           cd ubicenter.org
           git add .
           git commit -m "Add new post"
           git push dest ${POST_NAME} --force
         env:
           UBICENTER_POST_BOT_TOKEN: ${{secrets.UBICENTER_POST_BOT_TOKEN}}
-          POST_NAME: analysis-template
+          POST_NAME: uk-lvt
