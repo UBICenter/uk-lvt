@@ -66,8 +66,9 @@ was["corp_wealth"] = was[
 ].sum(axis=1)
 
 totals = mdf.weighted_sum(
-    was, ["uk_land", "property_values", "corp_wealth"], "weight"
+    was, ["uk_land", "property_values", "corp_wealth", "wealth"], "weight"
 )
+print(totals)
 
 land_prop_share = (HH_NP_LAND_VALUE - totals.uk_land) / totals.property_values
 land_corp_share = CORP_LAND_VALUE / totals.corp_wealth
